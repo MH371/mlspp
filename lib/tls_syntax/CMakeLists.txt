@@ -1,21 +1,14 @@
-set(CURRENT_LIB_NAME tls_syntax)
+include(BuildUtility)
 
-###
-### Library Config
-###
-
-file(GLOB_RECURSE LIB_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
-file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-
-add_library(${CURRENT_LIB_NAME} ${LIB_HEADERS} ${LIB_SOURCES})
-add_dependencies(${CURRENT_LIB_NAME} mpark-variant)
-target_link_libraries(${CURRENT_LIB_NAME} mpark-variant)
-target_include_directories(${CURRENT_LIB_NAME}
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+BuildUtility(
+    NAME tls_syntax
+    IGNORE_WARNINGS_MSVC
+       4244 # 'conversion' conversion from 'type1' to 'type2', possible loss of data
+    FILES
+       src/tls_syntax.cpp
+       include/tls/tls_syntax.h
+    PUBLIC_HEADERS_DIR
+       include
+    DEPENDS_ON
+       mpark-variant
 )
-
-###
-### Tests
-###
-
-add_subdirectory(test)

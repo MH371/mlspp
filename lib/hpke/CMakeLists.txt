@@ -1,26 +1,28 @@
-set(CURRENT_LIB_NAME hpke)
+include(BuildUtility)
 
-###
-### Dependencies
-###
-find_package(OpenSSL 1.1 REQUIRED)
-
-###
-### Library Config
-###
-
-file(GLOB_RECURSE LIB_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
-file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-
-add_library(${CURRENT_LIB_NAME} ${LIB_HEADERS} ${LIB_SOURCES})
-add_dependencies(${CURRENT_LIB_NAME} bytes tls_syntax)
-target_link_libraries(${CURRENT_LIB_NAME} PRIVATE bytes tls_syntax OpenSSL::Crypto)
-target_include_directories(${CURRENT_LIB_NAME}
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+BuildUtility(
+    NAME hpke
+    FILES
+       src/aead_cipher.cpp
+       src/certificate.cpp
+       src/common.cpp
+       src/dhkem.cpp
+       src/digest.cpp
+       src/group.cpp
+       src/hkdf.cpp
+       src/hpke.cpp
+       src/openssl_common.cpp
+       src/random.cpp
+       src/rsa.cpp
+       src/signature.cpp
+    PUBLIC_HEADERS_DIR
+       include
+    PRIVATE_HEADERS_DIR
+       src
+    DEPENDS_ON
+       bytes
+       tls_syntax
+       openssl
+       mpark-variant
 )
-
-###
-### Tests
-###
-
-add_subdirectory(test)
+  

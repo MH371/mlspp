@@ -1,21 +1,15 @@
-set(CURRENT_LIB_NAME mls_vectors)
+include(BuildUtility)
 
-###
-### Library Config
-###
-
-file(GLOB_RECURSE LIB_HEADERS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
-file(GLOB_RECURSE LIB_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
-
-add_library(${CURRENT_LIB_NAME} ${LIB_HEADERS} ${LIB_SOURCES})
-add_dependencies(${CURRENT_LIB_NAME} mlspp)
-target_link_libraries(${CURRENT_LIB_NAME} mlspp bytes tls_syntax)
-target_include_directories(${CURRENT_LIB_NAME}
-  PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+BuildUtility(
+    NAME mls_vectors
+    IGNORE_WARNINGS_MSVC
+       4244 # 'conversion' conversion from 'type1' to 'type2', possible loss of data
+    FILES
+       src/mls_vectors.cpp
+    PUBLIC_HEADERS_DIR
+       include
+    DEPENDS_ON
+       bytes
+       tls_syntax
+       mlspp
 )
-
-###
-### Tests
-###
-
-add_subdirectory(test)
