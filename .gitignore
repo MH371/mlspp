@@ -3,3 +3,4 @@ out
 *.swp
 .vs/**
 .vscode/**
+lib/hpke/src/hpke_common.cpp
